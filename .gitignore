@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -33,6 +34,9 @@
 
 # Visual Studio cache directory
 .vs/
+
+# Visual Studio Code cache directory
+.vscode/
 
 # Gradle cache directory
 .gradle/
