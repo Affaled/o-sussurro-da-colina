@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 
     private PlayerControls playerControls;
     private Vector2 movement;
+    private Vector2 lastMovementDirection = Vector2.down;
     private Rigidbody2D rb;
-
     private Animator myAnimator;
     private SpriteRenderer mySpriteRenderer;
 
@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         PlayerInput();
+        UpdateAnimatorParameters();
     }
 
     private void FixedUpdate()
@@ -40,8 +41,19 @@ public class PlayerController : MonoBehaviour
     {
         movement = playerControls.Movement.Move.ReadValue<Vector2>();
 
-        myAnimator.SetFloat("moveX", movement.x);
-        myAnimator.SetFloat("moveY", movement.y);
+        if (movement != Vector2.zero)
+        {
+            lastMovementDirection = movement.normalized;
+        }
+    }
+
+    private void UpdateAnimatorParameters()
+    {
+        Vector2 animDirection = movement != Vector2.zero ? movement.normalized : lastMovementDirection;
+
+        myAnimator.SetFloat("moveX", animDirection.x);
+        myAnimator.SetFloat("moveY", animDirection.y);
+        myAnimator.SetBool("isMoving", movement != Vector2.zero);
     }
 
     private void Move()
@@ -54,8 +66,7 @@ public class PlayerController : MonoBehaviour
         if (movement.x > 0)
         {
             mySpriteRenderer.flipX = false;
-        }
-        else if (movement.x < 0)
+        } else if (movement.x < 0)
         {
             mySpriteRenderer.flipX = true;
         }
